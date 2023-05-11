@@ -10,8 +10,8 @@ NEAR = -HALF_HEIGHT
 DEPTH = FAR - NEAR
 
 # GAME SETTINGS
-MAX_DISPLAY_RADIUS = 20
-OBJ_COUNT = 200
+MAX_DISPLAY_RADIUS = 0.35
+OBJ_COUNT = 100
 OBJ_RADIUS = 0.001  # the value for the non-translated cube the max value is cube limits
 OBJ_MASS = 10
 
@@ -26,4 +26,8 @@ INIT_MARGIN = (CUBE_MARGIN - BODY_INIT_BUFFER) / 2  # actually the longest dista
 # any axis that objects can be spawned
 INIT_LIMITS = ((-INIT_MARGIN, -INIT_MARGIN, -INIT_MARGIN), (INIT_MARGIN, INIT_MARGIN, INIT_MARGIN))
 RATIO = HEIGHT  # ratio is the postcalculational scaling factor
+
+
+# CONSTANTS
+COR = 1  # coefficient of restitution
 

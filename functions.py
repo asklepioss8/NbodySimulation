@@ -69,7 +69,7 @@ def check_coll_v1(point, point_list, radius):
 
 def uniform_position_3d_v1(obj_count, volume, radius):
     pos_list = []
-    random.seed = 123
+    random.seed = 12312
 
     minx = volume[0][0]
     miny = volume[0][1]
@@ -95,7 +95,6 @@ def uniform_position_3d_v1(obj_count, volume, radius):
 
 
 
-@jit(nopython=True)
 def collision_timing(pos1, vec1, rad1, pos2, vec2, rad2):
     rad_sum = rad1 + rad2
     dc = pos2 - pos1
@@ -144,6 +143,10 @@ def collision_timing(pos1, vec1, rad1, pos2, vec2, rad2):
 
     return time
 
+
+
+
+
 def wall_collision_time(obj, wall_coord):
     lwdx = obj.pos[0] - wall_coord[0][0]
     lwdy = obj.pos[1] - wall_coord[0][1]
@@ -153,12 +156,12 @@ def wall_collision_time(obj, wall_coord):
     rwdy = obj.pos[1] - wall_coord[1][1]
     rwdz = obj.pos[2] - wall_coord[1][2]
 
-    lwdx /= obj.vel[0] + 0.0000001
-    lwdy /= obj.vel[1] + 0.0000001
-    lwdz /= obj.vel[2] + 0.0000001
-    rwdx /= obj.vel[0] + 0.0000001
-    rwdy /= obj.vel[1] + 0.0000001
-    rwdz /= obj.vel[2] + 0.0000001
+    lwdx /= obj.vel[0] + 0.000000001
+    lwdy /= obj.vel[1] + 0.000000001
+    lwdz /= obj.vel[2] + 0.000000001
+    rwdx /= obj.vel[0] + 0.000000001
+    rwdy /= obj.vel[1] + 0.000000001
+    rwdz /= obj.vel[2] + 0.000000001
 
     if lwdx >= 0:
         reg = lwdx
@@ -180,27 +183,38 @@ def wall_collision_time(obj, wall_coord):
     return reg
 
 
-def collision_v1(obj1, obj2):
-    reg1 = obj1.vel[0]
-    reg2 = obj1.vel[1]
-    reg3 = obj1.vel[2]
+def collision_3d_v1(obj1, obj2):
+    m1 = obj1.mass
+    m2 = obj2.mass
+    pos1 = obj1.pos
+    pos2 = obj2.pos
+    vel1 = obj1.vel
+    vel2 = obj2.vel
 
-    obj1.vel[0] = obj2.vel[0]
-    obj1.vel[1] = obj2.vel[1]
-    obj1.vel[2] = obj2.vel[2]
+    reg = pos2 - pos1
+    reg1 = np.linalg.norm(reg)
+    normal = reg / reg1
 
-    obj2.vel[0] = reg1
-    obj2.vel[1] = reg2
-    obj2.vel[2] = reg3
-    print("collision")
+    reg = m1 * m2
+    reg1 = m1 + m2
+    red_mass = reg / reg1
+
+    reg = vel1 - vel2
+    v_imp = np.dot(normal, reg) # impact speed
+
+    J = (COR+1) * red_mass * v_imp # may (1 + COR)
+
+    reg = -J / m1
+    dv1 = reg * normal
+    reg = J / m2
+    dv2 = reg * normal
+    obj1.vel += dv1
+    obj2.vel += dv2
 
 def wall_collision(obj):
     obj.vel[0] = -obj.vel[0]
     obj.vel[1] = -obj.vel[1]
     obj.vel[2] = -obj.vel[2]
-
-
-
 
 
 

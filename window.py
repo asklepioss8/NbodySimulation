@@ -37,18 +37,22 @@ class Window:
             if event.type == pg.QUIT:
                 self.running = False
         keypress = pg.key.get_pressed()
-        if keypress[pg.K_7]:
+        if keypress[pg.K_q]:
             self.space.keypress(1)
-        if keypress[pg.K_4]:
+        if keypress[pg.K_w]:
             self.space.keypress(2)
-        if keypress[pg.K_8]:
+        if keypress[pg.K_e]:
             self.space.keypress(3)
-        if keypress[pg.K_5]:
+        if keypress[pg.K_a]:
             self.space.keypress(4)
-        if keypress[pg.K_9]:
+        if keypress[pg.K_s]:
             self.space.keypress(5)
-        if keypress[pg.K_6]:
+        if keypress[pg.K_d]:
             self.space.keypress(6)
+        if keypress[pg.K_r]:
+            self.space.rate += 0.001
+        if keypress[pg.K_f]:
+            self.space.rate -= 0.001
 
 
 
@@ -80,6 +84,7 @@ class Window:
             self.update()
             self.draw()
         else:
+            print("Done")
             pg.quit()
             sys.exit()
 
